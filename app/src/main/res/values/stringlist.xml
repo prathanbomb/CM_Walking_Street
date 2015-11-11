@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="my_data_list">
+
+        <item>Arts</item>
+        <item>Bags</item>
+        <item>Cloths</item>
+        <item>Decorations</item>
+        <item>Foods</item>
+        <item>Gifts</item>
+        <item>Instruments</item>
+        <item>Massage</item>
+        <item>Shoes</item>
+
+    </string-array>
+
+</resources>

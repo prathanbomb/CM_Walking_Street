@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:fitsSystemWindows="true"
+    tools:context="com.test.material.supitsara.materialnavigationtest.WriteReviewActivity"
+    android:background="@color/primary_material_light">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.design.widget.AppBarLayout android:layout_height="wrap_content"
+            android:layout_width="match_parent" android:theme="@style/AppTheme.AppBarOverlay">
+
+            <android.support.v7.widget.Toolbar android:id="@+id/toolbar"
+                android:layout_width="match_parent" android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary" app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+        </android.support.design.widget.AppBarLayout>
+
+        <ScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Give rating !!"
+                    android:layout_gravity="center_horizontal"
+                    android:textSize="25dp"
+                    android:textColor="@color/primary_text_default_material_light"/>
+
+                <RatingBar
+                    android:id="@+id/rating_bar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:stepSize="1" />
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="20dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Title"
+                        android:textColor="@color/primary_text_default_material_light"
+                        android:textSize="20dp"
+                        android:layout_marginBottom="5dp"/>
+
+                    <EditText
+                        android:id="@+id/title"
+                        android:layout_width="fill_parent"
+                        android:layout_height="35dp"
+                        android:background="@android:color/white"
+                        android:hint="50 characters"
+                        android:maxLines="1"
+                        android:singleLine="true" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Detail"
+                        android:textColor="@color/primary_text_default_material_light"
+                        android:textSize="20dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="5dp"/>
+
+                    <EditText
+                        android:id="@+id/detail"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/white"
+                        android:inputType="textMultiLine"
+                        android:lines="8"
+                        android:minLines="6"
+                        android:maxLines="10"
+                        android:gravity="top|left"
+                        android:hint="250 characters" />
+
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/button_submit"
+                        android:background="#ff3eaff9"
+                        android:textColor="#ffffff"
+                        android:text="Submit"
+                        android:textSize="18sp"
+                        android:layout_marginTop="16dp"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </LinearLayout>
+
+</android.support.design.widget.CoordinatorLayout>

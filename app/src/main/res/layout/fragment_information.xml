@@ -1,0 +1,12 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.test.material.supitsara.materialnavigationtest.InformationFragment">
+
+    <android.support.v7.widget.RecyclerView android:id="@+id/booth_detail"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:scrollbars="vertical" />
+
+</FrameLayout>
