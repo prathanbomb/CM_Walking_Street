@@ -32,8 +32,6 @@ public class LoginActivity extends AppCompatActivity{
     private ImageView mLogo;
     private Context mContext;
 
-    private String url = "http://10.70.80.249/android_connect/";
-
     private static final String MY_PREFS = "my_prefs";
 
     ServiceAPI.UserObject[] userObjects = new ServiceAPI.UserObject[0];
@@ -75,7 +73,7 @@ public class LoginActivity extends AppCompatActivity{
         String password = mPassword.getText().toString().trim();
 
         Retrofit.Builder builder = new Retrofit.Builder();
-        builder.baseUrl(url);
+        builder.baseUrl(getString(R.string.url));
         builder.addConverterFactory(GsonConverterFactory.create());
         ServiceAPI serviceAPI = builder.build().create(ServiceAPI.class);
         final ProgressDialog p = ProgressDialog.show(this, null, "Loading", true, false);

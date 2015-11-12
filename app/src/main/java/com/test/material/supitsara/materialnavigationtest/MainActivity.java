@@ -64,7 +64,7 @@ public class MainActivity extends ActionBarActivity
         // update the main content by replacing fragments
         //Toast.makeText(this, "Menu item selected -> " + mPlanetTitle[position], Toast.LENGTH_SHORT).show();
         if(position==0) {
-            HomeFragment homeFragment = new HomeFragment();
+            HomeFragment homeFragment = new HomeFragment(getApplicationContext());
             android.support.v4.app.FragmentManager manager = getSupportFragmentManager();
             android.support.v4.app.FragmentTransaction transaction = manager.beginTransaction();
             transaction.replace(R.id.container, homeFragment);

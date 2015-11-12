@@ -53,7 +53,7 @@ public class RegisterActivity extends AppCompatActivity {
                 if(checkFullfill(username, password, email, fname, lname, tel)) {
                     if(password.contentEquals(rpword.getText().toString().trim())) {
                         Retrofit.Builder builder = new Retrofit.Builder();
-                        builder.baseUrl(url);
+                        builder.baseUrl(getString(R.string.url));
                         builder.addConverterFactory(GsonConverterFactory.create());
                         ServiceAPI serviceAPI = builder.build().create(ServiceAPI.class);
                         //final ProgressDialog p = ProgressDialog.show(getApplicationContext(), null, "Loading", true, false);

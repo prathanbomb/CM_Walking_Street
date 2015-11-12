@@ -57,7 +57,7 @@ public class WriteReviewActivity extends AppCompatActivity {
                 if(checkSubmit(title,detail)) {
                     if(getIntent().getBooleanExtra("wrote", false)) {
                         Retrofit.Builder builder = new Retrofit.Builder();
-                        builder.baseUrl(url);
+                        builder.baseUrl(getString(R.string.url));
                         builder.addConverterFactory(GsonConverterFactory.create());
                         ServiceAPI serviceAPI = builder.build().create(ServiceAPI.class);
                         final ProgressDialog p = ProgressDialog.show(WriteReviewActivity.this, null, "Loading", true, false);
@@ -84,7 +84,7 @@ public class WriteReviewActivity extends AppCompatActivity {
                         });
                     } else {
                         Retrofit.Builder builder = new Retrofit.Builder();
-                        builder.baseUrl(url);
+                        builder.baseUrl(getString(R.string.url));
                         builder.addConverterFactory(GsonConverterFactory.create());
                         ServiceAPI serviceAPI = builder.build().create(ServiceAPI.class);
                         final ProgressDialog p = ProgressDialog.show(WriteReviewActivity.this, null, "Loading", true, false);

@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -93,7 +94,7 @@ public class ReviewFragment extends Fragment {
         });
 
         Retrofit.Builder builder = new Retrofit.Builder();
-        builder.baseUrl(url);
+        builder.baseUrl(getString(R.string.url));
         builder.addConverterFactory(GsonConverterFactory.create());
         ServiceAPI serviceAPI = builder.build().create(ServiceAPI.class);
         //final ProgressDialog p = ProgressDialog.show(mContext, null, "Loading", true, false);
@@ -111,11 +112,50 @@ public class ReviewFragment extends Fragment {
                 Log.e("TEST", "Error : " + t.getMessage());
                 ConnectivityManager connManager = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
                 NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-                if(mWifi.isConnected()) {
+                if (mWifi.isConnected()) {
                     Toast.makeText(mContext, "Review not found", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(mContext, "Connection failed", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+
+        final SwipeRefreshLayout swipeRefresh =
+                (SwipeRefreshLayout) v.findViewById(R.id.swiperefresh);
+        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // download data
+                Retrofit.Builder builder = new Retrofit.Builder();
+                builder.baseUrl(getString(R.string.url));
+                builder.addConverterFactory(GsonConverterFactory.create());
+                ServiceAPI serviceAPI = builder.build().create(ServiceAPI.class);
+                //final ProgressDialog p = ProgressDialog.show(mContext, null, "Loading", true, false);
+                serviceAPI.getReview(booth_id).enqueue(new Callback<ServiceAPI.ReviewObject[]>() {
+                    @Override
+                    public void onResponse(Response<ServiceAPI.ReviewObject[]> response, Retrofit retrofit) {
+                        //p.dismiss();
+                        reviewObjects = response.body();
+                        mRecyclerView.getAdapter().notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onFailure(Throwable t) {
+                        //p.dismiss();
+                        Log.e("TEST", "Error : " + t.getMessage());
+                        ConnectivityManager connManager = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+                        NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+                        if (mWifi.isConnected()) {
+                            Toast.makeText(mContext, "Review not found", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(mContext, "Connection failed", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+                // refresh recycler view
+                mRecyclerView.getAdapter().notifyDataSetChanged();
+                swipeRefresh.setRefreshing(false);
             }
         });
 
