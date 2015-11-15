@@ -43,7 +43,7 @@ public class BoothListActivity extends AppCompatActivity {
     private static String urlDevice = "http://10.70.80.249/android_connect/";
     private static String url = urlDevice;
     private static String categoryID;
-    private static String categoryName;
+    private String categoryName;
 
     public double latitude;
     public double longitude;
@@ -66,20 +66,10 @@ public class BoothListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_booth_list);
         Intent intent = getIntent();
-        if(categoryName==null)
-            categoryName = intent.getStringExtra("categoryName");
+        categoryName = intent.getStringExtra("categoryName");
 //        mToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
 //        setSupportActionBar(mToolbar);
 //        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        if (savedInstanceState != null) {
-            // Restore value of members from saved state
-            categoryID = savedInstanceState.getString("categoryID");
-            categoryName = savedInstanceState.getString("categoryName");
-        } else {
-            // Probably initialize members with default values for a new instance
-            Log.d("TEST", "There are not saveinstancestate");
-        }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -149,20 +139,6 @@ public class BoothListActivity extends AppCompatActivity {
                 Log.d("TEST", "refresh");
             }
         });
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        outState.putString("categoryID", categoryID);
-        outState.putString("categoryName", categoryName);
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        categoryID = savedInstanceState.getString("categoryID");
-        categoryName = savedInstanceState.getString("categoryName");
     }
 
     @Override
@@ -244,7 +220,7 @@ public class BoothListActivity extends AppCompatActivity {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     Retrofit.Builder builder = new Retrofit.Builder();
-                    builder.baseUrl(url);
+                    builder.baseUrl(getString(R.string.url));
                     builder.addConverterFactory(GsonConverterFactory.create());
                     final ServiceAPI serviceAPI = builder.build().create(ServiceAPI.class);
                     loadData(serviceAPI,categoryID, mSelected);
@@ -258,6 +234,8 @@ public class BoothListActivity extends AppCompatActivity {
             // สุดท้ายอย่าลืม show() ด้วย
             builder.show();
             return true;
+        } else if(id == android.R.id.home) {
+            finish();
         }
         return super.onOptionsItemSelected(item);
     }
