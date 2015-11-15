@@ -24,9 +24,6 @@
             android:name=".BoothListActivity"
             android:label="@string/title_activity_booth_list"
             android:screenOrientation="userPortrait" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.test.material.supitsara.materialnavigationtest.MainActivity" />
         </activity>
         <activity
             android:name=".LoginActivity"
@@ -44,20 +41,12 @@
         <activity
             android:name=".BoothDetailActivity"
             android:label="@string/title_activity_booth_detail"
-            android:parentActivityName=".BoothListActivity"
             android:theme="@style/AppTheme" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.test.material.supitsara.materialnavigationtest.BoothListActivity" />
         </activity>
         <activity
             android:name=".WriteReviewActivity"
             android:label="@string/title_activity_write_review"
-            android:parentActivityName=".BoothDetailActivity"
             android:theme="@style/AppTheme" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.test.material.supitsara.materialnavigationtest.BoothDetailActivity" />
         </activity>
         <activity
             android:name=".RegisterActivity"
