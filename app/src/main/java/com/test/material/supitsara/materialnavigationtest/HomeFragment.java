@@ -5,10 +5,13 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +27,11 @@ import com.bumptech.glide.Glide;
 
 import java.util.Arrays;
 
+import retrofit.Callback;
+import retrofit.GsonConverterFactory;
+import retrofit.Response;
+import retrofit.Retrofit;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -34,6 +42,9 @@ public class HomeFragment extends Fragment {
     private View mDetailsLayout;
     private UnfoldableView mUnfoldableView;
     public Context mContext;
+    public RecyclerView mRecyclerView;
+    public ImageView detailImage;
+    ServiceAPI.NewsObject[] newsObjects = new ServiceAPI.NewsObject[0];
 
     public HomeFragment(Context context) {
         mContext = context;
@@ -45,7 +56,8 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_home, container, false);
-        RecyclerView mRecyclerView = (RecyclerView) v.findViewById(R.id.news);
+        detailImage = (ImageView) v.findViewById(R.id.details_image);
+        mRecyclerView = (RecyclerView) v.findViewById(R.id.news);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setAdapter(new ListAdapter());
 
@@ -59,6 +71,30 @@ public class HomeFragment extends Fragment {
 
         Bitmap glance = BitmapFactory.decodeResource(getResources(), R.drawable.unfold_glance);
         mUnfoldableView.setFoldShading(new GlanceFoldShading(glance));
+
+        Retrofit.Builder builder = new Retrofit.Builder();
+        builder.baseUrl(getString(R.string.url));
+        builder.addConverterFactory(GsonConverterFactory.create());
+        ServiceAPI serviceAPI = builder.build().create(ServiceAPI.class);
+        serviceAPI.getNews().enqueue(new Callback<ServiceAPI.NewsObject[]>() {
+            @Override
+            public void onResponse(Response<ServiceAPI.NewsObject[]> response, Retrofit retrofit) {
+                newsObjects = response.body();
+                mRecyclerView.getAdapter().notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                Log.e("TEST", "Error : " + t.getMessage());
+                ConnectivityManager connManager = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+                NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+                if (mWifi.isConnected()) {
+                    Toast.makeText(mContext, "News not found", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(mContext, "Connection failed", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         mUnfoldableView.setOnFoldingListener(new UnfoldableView.SimpleFoldingListener() {
             @Override
@@ -96,28 +132,36 @@ public class HomeFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(ListViewHolder holder, int position) {
-
+            Glide.with(mContext).load(newsObjects[position].news_thumbnail).into(holder.thumbnail);
+            holder.headline.setText(newsObjects[position].news_headline);
         }
 
         @Override
         public int getItemCount() {
-            return 10;
+            return newsObjects.length;
         }
-
     }
 
     class ListViewHolder extends RecyclerView.ViewHolder {
 
+        ImageView thumbnail;
+        TextView headline;
+
         public ListViewHolder(View itemView) {
             super(itemView);
-            ImageView imageView = (ImageView) itemView.findViewById(R.id.list_item_image);
-            imageView.setOnClickListener(new View.OnClickListener() {
+            thumbnail = (ImageView) itemView.findViewById(R.id.list_item_image);
+            headline = (TextView) itemView.findViewById(R.id.list_item_title);
+            thumbnail.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mUnfoldableView.unfold(v, mDetailsLayout);
+                    openDetail(v);
                 }
             });
         }
     }
 
+    public void openDetail(View v) {
+        mUnfoldableView.unfold(v, mDetailsLayout);
+        Glide.with(mContext).load("http://www.klongdigital.com/image_board/3604.jpg").into(detailImage);
+    }
 }

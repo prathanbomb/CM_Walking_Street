@@ -127,7 +127,7 @@ public class BoothDetailActivity extends AppCompatActivity {
             } else if(position==1) {
                 fragment = new ReviewFragment(getApplicationContext(), intent.getStringExtra("boothID"), intent.getStringExtra("boothName"));
             } else {
-                fragment = PlaceholderFragment.newInstance(position + 1);
+                fragment = new PhotoFragment(getApplicationContext());
             }
             return fragment;
         }

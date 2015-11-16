@@ -178,7 +178,6 @@ public class BoothListActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(BoothListActivity.this, "Connection failed", Toast.LENGTH_SHORT).show();
                 }
-
             }
         });
     }

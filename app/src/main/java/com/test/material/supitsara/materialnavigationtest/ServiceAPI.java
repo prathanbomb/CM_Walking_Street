@@ -13,8 +13,18 @@ import retrofit.http.POST;
  * Created by supitsara on 1/11/2558.
  */
 public interface ServiceAPI {
-    @GET("get_booths.php")
-    Call<BoothObject[]> getBoothList();
+    @GET("get_news.php")
+    Call<NewsObject[]> getNews();
+
+    class NewsObject {
+        public int news_id;
+        public String news_thumbnail;
+        public String news_headline;
+        public String news_body;
+        public String start_date;
+        public String end_date;
+        public String update;
+    }
 
     @FormUrlEncoded
     @POST("get_booths.php")
