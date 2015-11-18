@@ -3,12 +3,14 @@ package com.test.material.supitsara.materialnavigationtest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Window;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
@@ -28,6 +30,12 @@ public class Splash extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
         mLogo = (ImageView) findViewById(R.id.logo);
         Glide.with(Splash.this).load(R.drawable.avatar).into(mLogo);
+        Typeface typeface1 = Typeface.createFromAsset(getAssets(), "comfortaa_bold.ttf");
+        Typeface typeface2 = Typeface.createFromAsset(getAssets(), "comfortaa_light.ttf");
+        TextView textView1 = (TextView) findViewById(R.id.cm);
+        TextView textView2 = (TextView) findViewById(R.id.walking_street);
+        textView1.setTypeface(typeface1);
+        textView2.setTypeface(typeface2);
         handler = new Handler();
         runnable= new Runnable() {
             @Override

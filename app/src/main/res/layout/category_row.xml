@@ -1,12 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="55dp" android:layout_width="match_parent">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="120dp">
 
-    <TextView android:id="@+id/item_name" android:layout_width="match_parent"
-        android:layout_height="match_parent" android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp" android:layout_marginRight="16dp"
-        android:drawablePadding="20dp" android:layout_marginEnd="16dp" android:textSize="20sp"
-        android:gravity="center_vertical" android:textColor="@color/myTextPrimaryColor"
-        android:background="@drawable/abc_textfield_default_mtrl_alpha" />
+    <ImageView
+        android:id="@+id/item_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        tools:ignore="ContentDescription"
+        android:src="@drawable/wallpaper" />
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/item_name"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textSize="20dp"
+        android:gravity="center_vertical"
+        android:textColor="@color/primary_text_default_material_dark"
+        android:text="test"
+        android:background="#5c1b1b1b"
+        android:paddingLeft="50dp"
+        android:textStyle="bold" />
+
+</FrameLayout>

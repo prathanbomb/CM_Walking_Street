@@ -58,15 +58,16 @@ public class BrowseFragment extends Fragment {
 
     public List<CategoryItem> getCategory(String[] strListView) {
         List<CategoryItem> items = new ArrayList<CategoryItem>();
-        items.add(new CategoryItem(strListView[0], getResources().getDrawable(R.drawable.ic_category_arts)));
-        items.add(new CategoryItem(strListView[1], getResources().getDrawable(R.drawable.ic_category_bags)));
-        items.add(new CategoryItem(strListView[2], getResources().getDrawable(R.drawable.ic_category_cloths)));
-        items.add(new CategoryItem(strListView[3], getResources().getDrawable(R.drawable.ic_category_decorations)));
-        items.add(new CategoryItem(strListView[4], getResources().getDrawable(R.drawable.ic_category_foods)));
-        items.add(new CategoryItem(strListView[5], getResources().getDrawable(R.drawable.ic_category_gifts)));
-        items.add(new CategoryItem(strListView[6], getResources().getDrawable(R.drawable.ic_category_instruments)));
-        items.add(new CategoryItem(strListView[7], getResources().getDrawable(R.drawable.ic_category_massage)));
-        items.add(new CategoryItem(strListView[8], getResources().getDrawable(R.drawable.ic_category_shoes)));
+        items.add(new CategoryItem(strListView[0], R.drawable.art));
+        items.add(new CategoryItem(strListView[1], R.drawable.bag));
+        items.add(new CategoryItem(strListView[2], R.drawable.clothes));
+        items.add(new CategoryItem(strListView[3], R.drawable.decoration));
+        items.add(new CategoryItem(strListView[4], R.drawable.food));
+        items.add(new CategoryItem(strListView[5], R.drawable.gift));
+        items.add(new CategoryItem(strListView[6], R.drawable.instrument));
+        items.add(new CategoryItem(strListView[7], R.drawable.massage));
+        items.add(new CategoryItem(strListView[8], R.drawable.shoe));
+        items.add(new CategoryItem(strListView[9], R.drawable.others));
         return items;
     }
 

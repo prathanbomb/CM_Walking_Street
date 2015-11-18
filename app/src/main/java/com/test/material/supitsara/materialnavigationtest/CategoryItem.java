@@ -7,9 +7,9 @@ import android.graphics.drawable.Drawable;
  */
 public class CategoryItem {
     private String mText;
-    private Drawable mDrawable;
+    private int mDrawable;
 
-    public CategoryItem(String text, Drawable drawable) {
+    public CategoryItem(String text, int drawable) {
         mText = text;
         mDrawable = drawable;
     }
@@ -22,11 +22,11 @@ public class CategoryItem {
         mText = text;
     }
 
-    public Drawable getDrawable() {
+    public int getDrawable() {
         return mDrawable;
     }
 
-    public void setDrawable(Drawable drawable) {
+    public void setDrawable(int drawable) {
         mDrawable = drawable;
     }
 }

@@ -6,8 +6,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -35,7 +38,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
         viewHolder.textView.setText(mData.get(position).getText());
-        viewHolder.textView.setCompoundDrawablesWithIntrinsicBounds(mData.get(position).getDrawable(), null, null, null);
+        Glide.with(context).load(mData.get(position).getDrawable()).into(viewHolder.imageView);
     }
 
     @Override
@@ -45,10 +48,12 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView textView;
+        public ImageView imageView;
 
         public ViewHolder(View itemView) {
             super(itemView);
             textView = (TextView) itemView.findViewById(R.id.item_name);
+            imageView = (ImageView) itemView.findViewById(R.id.item_image);
             itemView.setOnClickListener(this);
         }
 

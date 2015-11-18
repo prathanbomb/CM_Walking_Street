@@ -22,4 +22,6 @@
     <string name="title_activity_register">RegisterActivity</string>
 
     <string name="url">http://192.168.1.2/android_connect/</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="title_activity_map">MapActivity</string>
 </resources>

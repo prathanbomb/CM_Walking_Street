@@ -29,23 +29,25 @@
             android:gravity="center_horizontal">
 
             <TextView
+                android:id="@+id/cm"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="CM "
-                android:textColor="#ffffff"
+                android:textColor="@android:color/white"
                 android:layout_centerHorizontal="true"
                 android:textSize="30dp"
                 android:textStyle="bold"
-                android:layout_marginTop="20dp"/>
+                android:layout_marginTop="20dp" />
 
             <TextView
+                android:id="@+id/walking_street"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Walking Street"
                 android:textColor="#ffffff"
                 android:layout_centerHorizontal="true"
                 android:textSize="30dp"
-                android:layout_marginTop="20dp"/>
+                android:layout_marginTop="20dp" />
 
         </LinearLayout>
 

@@ -3,25 +3,17 @@ package com.test.material.supitsara.materialnavigationtest;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.ColorStateList;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
-import org.w3c.dom.Text;
-
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 
 
 /**
@@ -33,21 +25,24 @@ public class InformationFragment extends Fragment {
     String mThumbnailUrl;
     String mDetailString;
     String mLocationString;
-    String mEmail;
-    String mTel;
-    double mRating;
+    String Email;
+    String Tel;
+    double Rating;
     int review_count;
-    RecyclerView mRecyclerView;
+    Double mLatitude;
+    Double mLongitude;
 
-    public InformationFragment(Context context, String thumbnail, String detail, String location, String email, String tel, double rating, int review) {
+    public InformationFragment(Context context, String thumbnail, String detail, String location, String email, String tel, double rating, int review, double lat, double aLong) {
         mContext = context;
         mThumbnailUrl = thumbnail;
         mDetailString = detail;
         mLocationString = location;
-        mEmail = email;
-        mTel = tel;
-        mRating = rating;
+        Email = email;
+        Tel = tel;
+        Rating = rating;
         review_count = review;
+        mLatitude = lat;
+        mLongitude = aLong;
     }
 
 
@@ -56,42 +51,6 @@ public class InformationFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_information, container, false);
-        // Initialize recycler view
-        mRecyclerView = (RecyclerView) v.findViewById(R.id.booth_detail);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mRecyclerView.setAdapter(new ListAdapter());
-        return v;
-    }
-
-    class ListAdapter extends RecyclerView.Adapter<ListViewHolder> {
-
-        @Override
-        public ListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            return new ListViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.detail_item, parent, false));
-        }
-
-        @Override
-        public void onBindViewHolder(ListViewHolder holder, int position) {
-            holder.mRating.setText(String.valueOf(new DecimalFormat("#0.0").format(mRating)) + "/5.0");
-            if(review_count>1)
-                holder.mReview.setText(String.valueOf(review_count) + " reviews");
-            else
-                holder.mReview.setText(String.valueOf(review_count) + " review");
-            Glide.with(mContext).load(mThumbnailUrl).into(holder.mThumbnail);
-            holder.mDetail.setText(mDetailString);
-            holder.mLocation.setText(mLocationString);
-            holder.mEmail.setText(mEmail);
-            holder.mTel.setText(mTel);
-        }
-
-        @Override
-        public int getItemCount() {
-            return 1;
-        }
-
-    }
-
-    class ListViewHolder extends RecyclerView.ViewHolder {
 
         ImageView mThumbnail;
         TextView mRating;
@@ -100,17 +59,38 @@ public class InformationFragment extends Fragment {
         TextView mLocation;
         TextView mEmail;
         TextView mTel;
+        ImageView mapImage;
 
-        public ListViewHolder(View itemView) {
-            super(itemView);
-            mThumbnail = (ImageView) itemView.findViewById(R.id.thumbnail);
-            mRating = (TextView) itemView.findViewById(R.id.rating);
-            mReview = (TextView) itemView.findViewById(R.id.review);
-            mDetail = (TextView) itemView.findViewById(R.id.description);
-            mLocation = (TextView) itemView.findViewById(R.id.location);
-            mEmail = (TextView) itemView.findViewById(R.id.email);
-            mTel = (TextView) itemView.findViewById(R.id.tel);
-        }
+        mThumbnail = (ImageView) v.findViewById(R.id.thumbnail);
+        mRating = (TextView) v.findViewById(R.id.rating);
+        mReview = (TextView) v.findViewById(R.id.review);
+        mDetail = (TextView) v.findViewById(R.id.description);
+        mLocation = (TextView) v.findViewById(R.id.location);
+        mEmail = (TextView) v.findViewById(R.id.email);
+        mTel = (TextView) v.findViewById(R.id.tel);
+        mapImage = (ImageView) v.findViewById(R.id.map_image);
+
+        mRating.setText(String.valueOf(new DecimalFormat("#0.0").format(Rating)) + "/5.0");
+        if(review_count>1)
+            mReview.setText(String.valueOf(review_count) + " reviews");
+        else
+            mReview.setText(String.valueOf(review_count) + " review");
+        Glide.with(mContext).load(mThumbnailUrl).into(mThumbnail);
+        mDetail.setText(mDetailString);
+        mLocation.setText(mLocationString);
+        mEmail.setText(Email);
+        mTel.setText(Tel);
+
+        Glide.with(mContext).load("https://maps.googleapis.com/maps/api/staticmap?center=" + mLatitude + "," + mLongitude + "&zoom=16&size=400x200&scale=2&" + "markers=color:orange%7C" + mLatitude + "," + mLongitude + "&key=" + getString(R.string.google_maps_key)).into(mapImage);
+
+        mapImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, MapActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        return v;
     }
-
 }

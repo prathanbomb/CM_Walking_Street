@@ -19,6 +19,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.MapFragment;
+
 import retrofit.Callback;
 import retrofit.GsonConverterFactory;
 import retrofit.Response;
@@ -84,7 +86,11 @@ public class MainActivity extends ActionBarActivity
             transaction.replace(R.id.container, searchFragment);
             transaction.commit();
         } else if(position==3) {
-
+            TourFragment tourFragment = new TourFragment();
+            android.support.v4.app.FragmentManager manager = getSupportFragmentManager();
+            android.support.v4.app.FragmentTransaction transaction = manager.beginTransaction();
+            transaction.replace(R.id.container, tourFragment);
+            transaction.commit();
         } else if(position==4) {
             SharedPreferences shared = getSharedPreferences(MY_PREFS, Context.MODE_PRIVATE);
             final SharedPreferences.Editor editor = shared.edit();
@@ -129,6 +135,7 @@ public class MainActivity extends ActionBarActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_tour) {
+            onNavigationDrawerItemSelected(3);
             return true;
         }
 

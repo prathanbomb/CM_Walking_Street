@@ -3,15 +3,16 @@
 
     <string-array name="my_data_list">
 
-        <item>Arts</item>
-        <item>Bags</item>
-        <item>Cloths</item>
-        <item>Decorations</item>
-        <item>Foods</item>
-        <item>Gifts</item>
-        <item>Instruments</item>
+        <item>Art</item>
+        <item>Bag</item>
+        <item>Cloth</item>
+        <item>Decoration</item>
+        <item>Food</item>
+        <item>Gift</item>
+        <item>Instrument</item>
         <item>Massage</item>
-        <item>Shoes</item>
+        <item>Shoe</item>
+        <item>Others</item>
 
     </string-array>
 

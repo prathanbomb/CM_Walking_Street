@@ -104,21 +104,21 @@ public class BoothListActivity extends AppCompatActivity {
         builder.addConverterFactory(GsonConverterFactory.create());
         final ServiceAPI serviceAPI = builder.build().create(ServiceAPI.class);
 
-        if(categoryName.equalsIgnoreCase("Decorations")) {
+        if(categoryName.equalsIgnoreCase("Decoration")) {
             categoryID = "00001";
-        } else if(categoryName.equalsIgnoreCase("Cloths")) {
+        } else if(categoryName.equalsIgnoreCase("Cloth")) {
             categoryID = "00002";
-        } else if(categoryName.equalsIgnoreCase("Bags")) {
+        } else if(categoryName.equalsIgnoreCase("Bag")) {
             categoryID = "00003";
-        } else if(categoryName.equalsIgnoreCase("Shoes")) {
+        } else if(categoryName.equalsIgnoreCase("Shoe")) {
             categoryID = "00004";
-        } else if(categoryName.equalsIgnoreCase("Arts")) {
+        } else if(categoryName.equalsIgnoreCase("Art")) {
             categoryID = "00005";
-        } else if(categoryName.equalsIgnoreCase("Foods")) {
+        } else if(categoryName.equalsIgnoreCase("Food")) {
             categoryID = "00006";
-        } else if(categoryName.equalsIgnoreCase("Gifts")) {
+        } else if(categoryName.equalsIgnoreCase("Gift")) {
             categoryID = "00007";
-        } else if(categoryName.equalsIgnoreCase("Instruments")) {
+        } else if(categoryName.equalsIgnoreCase("Instrument")) {
             categoryID = "00008";
         } else if(categoryName.equalsIgnoreCase("Massage")) {
             categoryID = "00009";
@@ -314,6 +314,8 @@ public class BoothListActivity extends AppCompatActivity {
             intent.putExtra("tel", boothObjects[position].boothTel);
             intent.putExtra("rating", boothObjects[position].rating);
             intent.putExtra("review", boothObjects[position].review);
+            intent.putExtra("lat", boothObjects[position].boothLat);
+            intent.putExtra("long", boothObjects[position].boothLong);
             startActivity(intent);
         }
     }
