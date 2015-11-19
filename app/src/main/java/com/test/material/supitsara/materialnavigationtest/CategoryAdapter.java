@@ -2,6 +2,7 @@ package com.test.material.supitsara.materialnavigationtest;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,11 +49,17 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView textView;
+        public TextView textView2;
         public ImageView imageView;
 
         public ViewHolder(View itemView) {
             super(itemView);
+            Typeface typeface1 = Typeface.createFromAsset(context.getAssets(), "comfortaa_bold.ttf");
+            Typeface typeface2 = Typeface.createFromAsset(context.getAssets(), "comfortaa_light.ttf");
             textView = (TextView) itemView.findViewById(R.id.item_name);
+            textView2 = (TextView) itemView.findViewById(R.id.item_count);
+            textView.setTypeface(typeface1);
+            textView2.setTypeface(typeface2);
             imageView = (ImageView) itemView.findViewById(R.id.item_image);
             itemView.setOnClickListener(this);
         }

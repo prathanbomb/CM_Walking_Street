@@ -22,6 +22,7 @@ import java.text.DecimalFormat;
 public class InformationFragment extends Fragment {
 
     Context mContext;
+    String mBoothName;
     String mThumbnailUrl;
     String mDetailString;
     String mLocationString;
@@ -32,8 +33,9 @@ public class InformationFragment extends Fragment {
     Double mLatitude;
     Double mLongitude;
 
-    public InformationFragment(Context context, String thumbnail, String detail, String location, String email, String tel, double rating, int review, double lat, double aLong) {
+    public InformationFragment(Context context, String boothName, String thumbnail, String detail, String location, String email, String tel, double rating, int review, double lat, double aLong) {
         mContext = context;
+        mBoothName = boothName;
         mThumbnailUrl = thumbnail;
         mDetailString = detail;
         mLocationString = location;
@@ -87,6 +89,9 @@ public class InformationFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, MapActivity.class);
+                intent.putExtra("boothName", mBoothName);
+                intent.putExtra("lat", mLatitude);
+                intent.putExtra("long", mLongitude);
                 startActivity(intent);
             }
         });

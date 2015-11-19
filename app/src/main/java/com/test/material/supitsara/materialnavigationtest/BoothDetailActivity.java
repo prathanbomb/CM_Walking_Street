@@ -84,7 +84,6 @@ public class BoothDetailActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case android.R.id.home:
-                //NavUtils.navigateUpFromSameTask(this);
                 finish();
                 return true;
             default:
@@ -123,11 +122,11 @@ public class BoothDetailActivity extends AppCompatActivity {
             Intent intent = getIntent();
             Fragment fragment;
             if(position==0) {
-                fragment = new InformationFragment(getApplicationContext(), intent.getStringExtra("thumbnail"), intent.getStringExtra("detail"), intent.getStringExtra("location"), intent.getStringExtra("email"), intent.getStringExtra("tel"), intent.getDoubleExtra("rating", 0.0), intent.getIntExtra("review", 0), intent.getDoubleExtra("lat", 0.0), intent.getDoubleExtra("long", 0.0));
+                fragment = new InformationFragment(getApplicationContext(), intent.getStringExtra("boothName"),intent.getStringExtra("thumbnail"), intent.getStringExtra("detail"), intent.getStringExtra("location"), intent.getStringExtra("email"), intent.getStringExtra("tel"), intent.getDoubleExtra("rating", 0.0), intent.getIntExtra("review", 0), intent.getDoubleExtra("lat", 0.0), intent.getDoubleExtra("long", 0.0));
             } else if(position==1) {
                 fragment = new ReviewFragment(getApplicationContext(), intent.getStringExtra("boothID"), intent.getStringExtra("boothName"));
             } else {
-                fragment = new PhotoFragment(getApplicationContext());
+                fragment = new PhotoFragment(getApplicationContext(), intent.getStringExtra("boothID"));
             }
             return fragment;
         }

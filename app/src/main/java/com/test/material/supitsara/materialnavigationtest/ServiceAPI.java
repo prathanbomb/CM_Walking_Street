@@ -139,4 +139,14 @@ public interface ServiceAPI {
         public String join_date;
     }
 
+    @FormUrlEncoded
+    @POST("get_photo.php")
+    Call<PhotoObject[]> getPhoto(@Field("boothID") String BoothID);
+
+    class PhotoObject {
+        public int img_ID;
+        public String boothID;
+        public String imgUrl;
+    }
+
 }

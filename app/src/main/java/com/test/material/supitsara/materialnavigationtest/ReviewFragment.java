@@ -48,7 +48,6 @@ public class ReviewFragment extends Fragment {
     public int myStar;
     public String myHeader;
     public String myBody;
-    public String url = "http://10.70.80.249/android_connect/";
     ServiceAPI.ReviewObject[] reviewObjects = new ServiceAPI.ReviewObject[0];
 
     public ReviewFragment(Context context, String boothID, String boothname) {
@@ -113,9 +112,9 @@ public class ReviewFragment extends Fragment {
                 ConnectivityManager connManager = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
                 NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
                 if (mWifi.isConnected()) {
-                    Toast.makeText(mContext, "Review not found", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, "Connection fail", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(mContext, "Connection failed", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, "No connection", Toast.LENGTH_SHORT).show();
                 }
             }
         });

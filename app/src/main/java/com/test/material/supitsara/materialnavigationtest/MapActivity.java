@@ -28,7 +28,7 @@ public class MapActivity extends AppCompatActivity {
         setContentView(R.layout.activity_map);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Google Maps");
+        getSupportActionBar().setTitle(getIntent().getStringExtra("boothName"));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mMapView = (MapView) findViewById(R.id.mapView);
@@ -44,12 +44,12 @@ public class MapActivity extends AppCompatActivity {
 
         googleMap = mMapView.getMap();
         // latitude and longitude
-        double latitude = 18.788;
-        double longitude = 98.9914;
+        double latitude = getIntent().getDoubleExtra("lat", 0);
+        double longitude = getIntent().getDoubleExtra("long", 0);
 
         // create marker
         MarkerOptions marker = new MarkerOptions().position(
-                new LatLng(latitude, longitude)).title("Hello Maps");
+                new LatLng(latitude, longitude)).title(getIntent().getStringExtra("boothName"));
 
         // Changing marker icon
         marker.icon(BitmapDescriptorFactory
