@@ -131,9 +131,16 @@ public class HomeFragment extends Fragment {
         }
 
         @Override
-        public void onBindViewHolder(ListViewHolder holder, int position) {
+        public void onBindViewHolder(ListViewHolder holder, final int position) {
             Glide.with(mContext).load(newsObjects[position].news_thumbnail).into(holder.thumbnail);
             holder.headline.setText(newsObjects[position].news_headline);
+            holder.thumbnail.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mUnfoldableView.unfold(v, mDetailsLayout);
+                    Glide.with(mContext).load(newsObjects[position].news_thumbnail).into(detailImage);
+                }
+            });
         }
 
         @Override
@@ -151,17 +158,6 @@ public class HomeFragment extends Fragment {
             super(itemView);
             thumbnail = (ImageView) itemView.findViewById(R.id.list_item_image);
             headline = (TextView) itemView.findViewById(R.id.list_item_title);
-            thumbnail.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    openDetail(v);
-                }
-            });
         }
-    }
-
-    public void openDetail(View v) {
-        mUnfoldableView.unfold(v, mDetailsLayout);
-        Glide.with(mContext).load("http://www.klongdigital.com/image_board/3604.jpg").into(detailImage);
     }
 }

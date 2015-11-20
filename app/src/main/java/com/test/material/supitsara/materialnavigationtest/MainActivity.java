@@ -51,13 +51,15 @@ public class MainActivity extends ActionBarActivity
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getFragmentManager().findFragmentById(R.id.fragment_drawer);
 
+        mNavigationDrawerFragment.context = getApplicationContext();
+
         SharedPreferences shared = getSharedPreferences(MY_PREFS, Context.MODE_PRIVATE);
         final SharedPreferences.Editor editor = shared.edit();
 
         // Set up the drawer.
         mNavigationDrawerFragment.setup(R.id.fragment_drawer, (DrawerLayout) findViewById(R.id.drawer), mToolbar);
         // populate the navigation drawer
-        mNavigationDrawerFragment.setUserData(shared.getString("fullname", "Anonymous"), shared.getString("email", "login"), BitmapFactory.decodeResource(getResources(), R.drawable.avatar));
+        mNavigationDrawerFragment.setUserData(shared.getString("fullname", "Anonymous"), shared.getString("email", "login"), shared.getString("profile_img", ""));
 
     }
 
@@ -86,7 +88,7 @@ public class MainActivity extends ActionBarActivity
             transaction.replace(R.id.container, searchFragment);
             transaction.commit();
         } else if(position==3) {
-            TourFragment tourFragment = new TourFragment();
+            TourFragment tourFragment = new TourFragment(getApplicationContext());
             android.support.v4.app.FragmentManager manager = getSupportFragmentManager();
             android.support.v4.app.FragmentTransaction transaction = manager.beginTransaction();
             transaction.replace(R.id.container, tourFragment);

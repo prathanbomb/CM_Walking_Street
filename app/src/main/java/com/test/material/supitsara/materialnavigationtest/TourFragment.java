@@ -2,6 +2,7 @@ package com.test.material.supitsara.materialnavigationtest;
 
 
 
+import android.content.Context;
 import android.os.Bundle;
 
 import android.support.v4.app.Fragment;
@@ -27,10 +28,14 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class TourFragment extends Fragment {
 
     private GoogleMap googleMap;
+    Context mContext;
     MapView mMapView;
+    GPSTracker gps;
+    double latitude;
+    double longitude;
 
-    public TourFragment() {
-        // Required empty public constructor
+    public TourFragment(Context applicationContext) {
+        mContext = applicationContext;
     }
 
 
@@ -50,10 +55,18 @@ public class TourFragment extends Fragment {
             e.printStackTrace();
         }
 
+        gps = new GPSTracker(mContext);
+        if (gps.canGetLocation()) {
+            latitude = gps.getLatitude();
+            longitude = gps.getLongitude();
+        } else {
+            // can't get location
+            // GPS or Network is not enabled
+            // Ask user to enable GPS/network in settings
+            gps.showSettingsAlert();
+        }
+
         googleMap = mMapView.getMap();
-        // latitude and longitude
-        double latitude = 18.788;
-        double longitude = 98.9914;
 
         // create marker
         MarkerOptions marker = new MarkerOptions().position(

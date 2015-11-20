@@ -84,7 +84,7 @@ public class LoginActivity extends AppCompatActivity{
                 userObjects = response.body();
                 if (userObjects[0].success) {
                     Toast.makeText(getApplicationContext(), userObjects[0].message, Toast.LENGTH_SHORT).show();
-                    setLogin(userObjects[0].fname+" "+userObjects[0].lname, userObjects[0].email,userObjects[0].id);
+                    setLogin(userObjects[0].fname+" "+userObjects[0].lname, userObjects[0].email,userObjects[0].id, userObjects[0].profile_img);
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);
                     finish();
@@ -102,13 +102,14 @@ public class LoginActivity extends AppCompatActivity{
         });
     }
 
-    private void setLogin(String fullname, String email, String id) {
+    private void setLogin(String fullname, String email, String id, String profile_img) {
         SharedPreferences shared = getSharedPreferences(MY_PREFS, Context.MODE_PRIVATE);
         final SharedPreferences.Editor editor = shared.edit();
         editor.putBoolean("session", true);
         editor.putString("fullname", fullname);
         editor.putString("email", email);
         editor.putString("id", id);
+        editor.putString("profile_img", profile_img);
         editor.commit();
         boolean session = shared.getBoolean("session", false);
         Log.i("LOG_TAG", "session : " + session);

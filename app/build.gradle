@@ -32,4 +32,6 @@ dependencies {
     compile 'com.google.android.gms:play-services:8.3.0'
     compile 'com.android.support:design:22.2.1'
     compile 'com.alexvasilkov:foldable-layout:1.1.0'
+    compile 'com.akexorcist:RoundCornerProgressBar:1.0.0'
+    compile 'com.alexvasilkov:gesture-views:2.0.0'
 }

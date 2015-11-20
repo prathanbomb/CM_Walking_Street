@@ -1,13 +1,16 @@
 package com.test.material.supitsara.materialnavigationtest;
 
 import com.google.gson.annotations.SerializedName;
+import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.ResponseBody;
 
 import retrofit.Call;
 import retrofit.http.Field;
 import retrofit.http.FormUrlEncoded;
 import retrofit.http.GET;
+import retrofit.http.Multipart;
 import retrofit.http.POST;
+import retrofit.http.Part;
 
 /**
  * Created by supitsara on 1/11/2558.
@@ -67,8 +70,7 @@ public interface ServiceAPI {
         public String fname;
         @SerializedName("memberLname")
         public String lname;
-        @SerializedName("memberTel")
-        public String tel;
+        public String profile_img;
         @SerializedName("memberJoindate")
         public String join_date;
     }
@@ -96,6 +98,7 @@ public interface ServiceAPI {
         public String review_body;
         public String review_datetime;
         public String fullname;
+        public String profile_img;
     }
 
     @FormUrlEncoded
@@ -116,7 +119,7 @@ public interface ServiceAPI {
 
     @FormUrlEncoded
     @POST("register.php")
-    Call<RegisterObject[]> register(@Field("username") String username, @Field("password") String password, @Field("email") String email, @Field("fname") String fname, @Field("lname") String lname, @Field("tel") String tel);
+    Call<RegisterObject[]> register(@Field("username") String username, @Field("password") String password, @Field("email") String email, @Field("fname") String fname, @Field("lname") String lname);
 
     class RegisterObject {
         public boolean success;
@@ -133,8 +136,6 @@ public interface ServiceAPI {
         public String fname;
         @SerializedName("memberLname")
         public String lname;
-        @SerializedName("memberTel")
-        public String tel;
         @SerializedName("memberJoindate")
         public String join_date;
     }
@@ -148,5 +149,11 @@ public interface ServiceAPI {
         public String boothID;
         public String imgUrl;
     }
+
+    @Multipart
+    @POST("/upload.php")
+    Call<String> upload(
+            @Part("myfile\"; filename=\"image.png\" ") RequestBody file,
+            @Part("description") String description);
 
 }

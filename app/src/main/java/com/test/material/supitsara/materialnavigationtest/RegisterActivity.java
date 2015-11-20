@@ -23,7 +23,7 @@ import retrofit.Retrofit;
 public class RegisterActivity extends AppCompatActivity {
 
     Button submit;
-    String username, password, email, fname, lname, tel;
+    String username, password, email, fname, lname;
     EditText uname, pword, rpword, mail, f, l, t;
     private String url = "http://10.70.80.249/android_connect/";
     ServiceAPI.RegisterObject[] registerObjects = new ServiceAPI.RegisterObject[0];
@@ -39,7 +39,6 @@ public class RegisterActivity extends AppCompatActivity {
         mail = (EditText) findViewById(R.id.email);
         f = (EditText) findViewById(R.id.fname);
         l = (EditText) findViewById(R.id.lname);
-        t = (EditText) findViewById(R.id.tel);
         submit = (Button) findViewById(R.id.button_register);
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,15 +48,14 @@ public class RegisterActivity extends AppCompatActivity {
                 email = mail.getText().toString().trim();
                 fname = f.getText().toString().trim();
                 lname = l.getText().toString().trim();
-                tel = t.getText().toString().trim();
-                if(checkFullfill(username, password, email, fname, lname, tel)) {
+                if(checkFullfill(username, password, email, fname, lname)) {
                     if(password.contentEquals(rpword.getText().toString().trim())) {
                         Retrofit.Builder builder = new Retrofit.Builder();
                         builder.baseUrl(getString(R.string.url));
                         builder.addConverterFactory(GsonConverterFactory.create());
                         ServiceAPI serviceAPI = builder.build().create(ServiceAPI.class);
                         //final ProgressDialog p = ProgressDialog.show(getApplicationContext(), null, "Loading", true, false);
-                        serviceAPI.register(username, password, email, fname, lname, tel).enqueue(new Callback<ServiceAPI.RegisterObject[]>() {
+                        serviceAPI.register(username, password, email, fname, lname).enqueue(new Callback<ServiceAPI.RegisterObject[]>() {
                             @Override
                             public void onResponse(Response<ServiceAPI.RegisterObject[]> response, Retrofit retrofit) {
                                 //p.dismiss();
@@ -107,8 +105,8 @@ public class RegisterActivity extends AppCompatActivity {
 //        Log.i("LOG_TAG", "userKey : " + string);
     }
 
-    private boolean checkFullfill(String username, String password, String email, String fname, String lname, String tel) {
-        if(username.equalsIgnoreCase("") || password.equalsIgnoreCase("") || email.equalsIgnoreCase("") || fname.equalsIgnoreCase("") || lname.equalsIgnoreCase("") || tel.equalsIgnoreCase(""))
+    private boolean checkFullfill(String username, String password, String email, String fname, String lname) {
+        if(username.equalsIgnoreCase("") || password.equalsIgnoreCase("") || email.equalsIgnoreCase("") || fname.equalsIgnoreCase("") || lname.equalsIgnoreCase(""))
             return false;
         return true;
     }

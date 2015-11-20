@@ -7,6 +7,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -38,10 +39,12 @@ public class PhotoFragment extends Fragment {
     RecyclerView mRecyclerView;
     String booth_id;
     ServiceAPI.PhotoObject[] photoObjects = new ServiceAPI.PhotoObject[0];
+    String mBoothName;
 
-    public PhotoFragment(Context context, String boothID) {
+    public PhotoFragment(Context context, String boothID, String boothName) {
         mContext = context;
         booth_id = boothID;
+        mBoothName = boothName;
     }
 
     @Override
@@ -96,6 +99,14 @@ public class PhotoFragment extends Fragment {
         @Override
         public void onBindViewHolder(ListViewHolder holder, int position) {
             Glide.with(mContext).load(photoObjects[position].imgUrl).into(holder.imageView);
+            holder.imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(mContext, PhotoViewerActivity.class);
+                    intent.putExtra("boothName", mBoothName);
+                    startActivity(intent);
+                }
+            });
         }
 
         @Override
@@ -105,7 +116,7 @@ public class PhotoFragment extends Fragment {
 
     }
 
-    class ListViewHolder extends RecyclerView.ViewHolder {
+    class ListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         ImageView imageView;
 
@@ -114,6 +125,11 @@ public class PhotoFragment extends Fragment {
                 imageView = (ImageView) itemView.findViewById(R.id.grid_item);
         }
 
+        @Override
+        public void onClick(@NonNull View v) {
+            Intent intent = new Intent(mContext, PhotoViewerActivity.class);
+            startActivity(intent);
+        }
     }
 
 }

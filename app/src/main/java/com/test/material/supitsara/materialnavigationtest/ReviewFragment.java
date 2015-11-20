@@ -5,12 +5,15 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
 
 import java.text.DecimalFormat;
 
@@ -169,7 +173,7 @@ public class ReviewFragment extends Fragment {
         }
 
         @Override
-        public void onBindViewHolder(ListViewHolder holder, int position) {
+        public void onBindViewHolder(final ListViewHolder holder, int position) {
             SharedPreferences shared = mContext.getSharedPreferences(MY_PREFS, Context.MODE_PRIVATE);
             id = shared.getString("id", "id not found");
             if(id.equalsIgnoreCase(reviewObjects[position].user_id)) {
@@ -183,6 +187,16 @@ public class ReviewFragment extends Fragment {
             holder.review_header.setText("\"" + reviewObjects[position].review_header + "\"");
             holder.review_body.setText(reviewObjects[position].review_body);
             holder.review_datetime.setText(reviewObjects[position].review_datetime);
+            Glide.with(mContext).load(reviewObjects[position].profile_img).asBitmap().centerCrop().placeholder(R.drawable.avatar_gray).into(new BitmapImageViewTarget(holder.imageView){
+                @Override
+                protected void setResource(Bitmap resource) {
+                    RoundedBitmapDrawable circularBitmapDrawable =
+                            RoundedBitmapDrawableFactory.create(mContext.getResources(), resource);
+                    circularBitmapDrawable.setCornerRadius(90);
+                    circularBitmapDrawable.setAntiAlias(true);
+                    holder.imageView.setImageDrawable(circularBitmapDrawable);
+                }
+            });
         }
 
         @Override
@@ -194,6 +208,7 @@ public class ReviewFragment extends Fragment {
 
     class ListViewHolder extends RecyclerView.ViewHolder {
 
+        ImageView imageView;
         TextView username;
         RatingBar ratingBar;
         TextView review_header;
@@ -202,6 +217,7 @@ public class ReviewFragment extends Fragment {
 
         public ListViewHolder(View itemView) {
             super(itemView);
+            imageView = (ImageView) itemView.findViewById(R.id.profile_img);
             username = (TextView) itemView.findViewById(R.id.name);
             ratingBar = (RatingBar) itemView.findViewById(R.id.user_rate);
             review_header = (TextView) itemView.findViewById(R.id.review_header);

@@ -24,4 +24,8 @@
     <string name="url">http://192.168.1.2/android_connect/</string>
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_map">MapActivity</string>
+
+    <string name="title_activity_photo_viewer">PhotoViewerActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>

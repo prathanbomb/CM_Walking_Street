@@ -73,6 +73,12 @@
             android:label="@string/title_activity_map"
             android:theme="@style/AppTheme" >
         </activity>
+        <activity
+            android:name=".PhotoViewerActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_photo_viewer"
+            android:theme="@style/FullscreenTheme" >
+        </activity>
     </application>
 
 </manifest>
