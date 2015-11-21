@@ -39,6 +39,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
         viewHolder.textView.setText(mData.get(position).getText());
+        viewHolder.textView2.setText("("+String.valueOf(mData.get(position).getCount())+")");
         Glide.with(context).load(mData.get(position).getDrawable()).into(viewHolder.imageView);
     }
 
@@ -54,12 +55,11 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
         public ViewHolder(View itemView) {
             super(itemView);
-            Typeface typeface1 = Typeface.createFromAsset(context.getAssets(), "comfortaa_bold.ttf");
-            Typeface typeface2 = Typeface.createFromAsset(context.getAssets(), "comfortaa_light.ttf");
+            Typeface typeface = Typeface.createFromAsset(context.getAssets(), "comfortaa_bold.ttf");
             textView = (TextView) itemView.findViewById(R.id.item_name);
             textView2 = (TextView) itemView.findViewById(R.id.item_count);
-            textView.setTypeface(typeface1);
-            textView2.setTypeface(typeface2);
+            textView.setTypeface(typeface);
+            textView2.setTypeface(typeface);
             imageView = (ImageView) itemView.findViewById(R.id.item_image);
             itemView.setOnClickListener(this);
         }

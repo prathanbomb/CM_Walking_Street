@@ -8,10 +8,12 @@ import android.graphics.drawable.Drawable;
 public class CategoryItem {
     private String mText;
     private int mDrawable;
+    private int booth_count;
 
-    public CategoryItem(String text, int drawable) {
+    public CategoryItem(String text, int drawable, int count) {
         mText = text;
         mDrawable = drawable;
+        booth_count = count;
     }
 
     public String getText() {
@@ -24,6 +26,10 @@ public class CategoryItem {
 
     public int getDrawable() {
         return mDrawable;
+    }
+
+    public int getCount() {
+        return booth_count;
     }
 
     public void setDrawable(int drawable) {

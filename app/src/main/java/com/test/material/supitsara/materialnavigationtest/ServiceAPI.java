@@ -29,6 +29,14 @@ public interface ServiceAPI {
         public String update;
     }
 
+    @GET("get_booth_count.php")
+    Call<CountObject[]> getBoothCount();
+
+    class CountObject {
+        public String catID;
+        public int count;
+    }
+
     @FormUrlEncoded
     @POST("get_booths.php")
     Call<BoothObject[]> sendData(@Field("catID") String catID, @Field("sortBy") String sortBy, @Field("latitude") double latitude, @Field("longitude") double longitude);
