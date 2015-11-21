@@ -44,6 +44,8 @@ public class HomeFragment extends Fragment {
     public Context mContext;
     public RecyclerView mRecyclerView;
     public ImageView detailImage;
+    public TextView detailTitle;
+    public TextView detailText;
     ServiceAPI.NewsObject[] newsObjects = new ServiceAPI.NewsObject[0];
 
     public HomeFragment(Context context) {
@@ -57,6 +59,8 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_home, container, false);
         detailImage = (ImageView) v.findViewById(R.id.details_image);
+        detailTitle = (TextView) v.findViewById(R.id.details_title);
+        detailText = (TextView) v.findViewById(R.id.details_text);
         mRecyclerView = (RecyclerView) v.findViewById(R.id.news);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setAdapter(new ListAdapter());
@@ -131,7 +135,7 @@ public class HomeFragment extends Fragment {
         }
 
         @Override
-        public void onBindViewHolder(ListViewHolder holder, final int position) {
+        public void onBindViewHolder(final ListViewHolder holder, final int position) {
             Glide.with(mContext).load(newsObjects[position].news_thumbnail).into(holder.thumbnail);
             holder.headline.setText(newsObjects[position].news_headline);
             holder.thumbnail.setOnClickListener(new View.OnClickListener() {
@@ -139,6 +143,8 @@ public class HomeFragment extends Fragment {
                 public void onClick(View v) {
                     mUnfoldableView.unfold(v, mDetailsLayout);
                     Glide.with(mContext).load(newsObjects[position].news_thumbnail).into(detailImage);
+                    detailTitle.setText(newsObjects[position].news_headline);
+                    detailText.setText(newsObjects[position].news_body);
                 }
             });
         }

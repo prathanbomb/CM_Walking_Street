@@ -97,13 +97,15 @@ public class PhotoFragment extends Fragment {
         }
 
         @Override
-        public void onBindViewHolder(ListViewHolder holder, int position) {
+        public void onBindViewHolder(ListViewHolder holder, final int position) {
             Glide.with(mContext).load(photoObjects[position].imgUrl).into(holder.imageView);
             holder.imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(mContext, PhotoViewerActivity.class);
                     intent.putExtra("boothName", mBoothName);
+                    intent.putExtra("boothID", photoObjects[position].boothID);
+                    intent.putExtra("position", position);
                     startActivity(intent);
                 }
             });
