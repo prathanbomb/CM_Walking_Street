@@ -3,6 +3,7 @@ package com.test.material.supitsara.materialnavigationtest;
 
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import android.support.v4.app.Fragment;
@@ -21,6 +22,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.List;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -33,6 +36,12 @@ public class TourFragment extends Fragment {
     GPSTracker gps;
     double latitude;
     double longitude;
+
+    private static final String MY_PREFS = "my_prefs";
+
+    GreenDaoApplication greenDaoApplication;
+    DaoSession daoSession;
+    TourDao tourDao;
 
     public TourFragment(Context applicationContext) {
         mContext = applicationContext;
@@ -66,11 +75,18 @@ public class TourFragment extends Fragment {
             gps.showSettingsAlert();
         }
 
+        SharedPreferences shared = mContext.getSharedPreferences(MY_PREFS, Context.MODE_PRIVATE);
+        greenDaoApplication = (GreenDaoApplication) mContext.getApplicationContext();
+        daoSession = greenDaoApplication.getDaoSession();
+        tourDao = daoSession.getTourDao();
+        List<Tour> tourList = tourDao.queryBuilder().where(TourDao.Properties.UserID.eq(shared.getString("id", "00001"))).build().list();
+
         googleMap = mMapView.getMap();
+        googleMap.clear();
 
         // create marker
         MarkerOptions marker = new MarkerOptions().position(
-                new LatLng(latitude, longitude)).title("Hello Maps");
+                new LatLng(latitude, longitude)).title("You're here");
 
         // Changing marker icon
         marker.icon(BitmapDescriptorFactory
@@ -83,7 +99,21 @@ public class TourFragment extends Fragment {
         googleMap.animateCamera(CameraUpdateFactory
                 .newCameraPosition(cameraPosition));
 
-        // Perform any camera updates here
+        for (Tour tour : tourList) {
+            marker = new MarkerOptions().position(
+                    new LatLng(tour.getLat(), tour.getLong())).title(tour.getBoothID());
+            // Changing marker icon
+            marker.icon(BitmapDescriptorFactory
+                    .defaultMarker(BitmapDescriptorFactory.HUE_RED));
+
+            // adding marker
+            googleMap.addMarker(marker);
+            cameraPosition = new CameraPosition.Builder()
+                    .target(new LatLng(latitude, longitude)).zoom(15).build();
+            googleMap.animateCamera(CameraUpdateFactory
+                    .newCameraPosition(cameraPosition));
+        }
+
         return v;
     }
 

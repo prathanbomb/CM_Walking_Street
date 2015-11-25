@@ -1,6 +1,8 @@
 package com.test.material.supitsara.materialnavigationtest;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -21,6 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -42,6 +45,12 @@ public class BoothDetailActivity extends AppCompatActivity {
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
+    private static final String MY_PREFS = "my_prefs";
+
+    GreenDaoApplication greenDaoApplication;
+    DaoSession daoSession;
+    TourDao tourDao;
+    private Menu menu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +60,9 @@ public class BoothDetailActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        greenDaoApplication = (GreenDaoApplication) getApplication();
+        daoSession = greenDaoApplication.getDaoSession();
 
         Intent intent = getIntent();
         String boothName = intent.getStringExtra("boothName");
@@ -72,7 +84,16 @@ public class BoothDetailActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        //getMenuInflater().inflate(R.menu.menu_booth_detail, menu);
+        this.menu = menu;
+        getMenuInflater().inflate(R.menu.menu_booth_detail, menu);
+
+        SharedPreferences shared = getSharedPreferences(MY_PREFS, Context.MODE_PRIVATE);
+        tourDao = daoSession.getTourDao();
+        if ((tourDao.queryBuilder().where((TourDao.Properties.UserID.eq(shared.getString("id", "00001"))),(TourDao.Properties.BoothID.eq(getIntent().getStringExtra("boothID")))).build().list().size())==0)
+            this.menu.getItem(0).setIcon(R.drawable.ic_favorite_border_white_36dp);
+        else
+            this.menu.getItem(0).setIcon(R.drawable.ic_favorite_white_36dp);
+
         return true;
     }
 
@@ -81,10 +102,23 @@ public class BoothDetailActivity extends AppCompatActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
+        SharedPreferences shared = getSharedPreferences(MY_PREFS, Context.MODE_PRIVATE);
 
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
+                return true;
+            case R.id.action_add:
+                if ((tourDao.queryBuilder().where((TourDao.Properties.UserID.eq(shared.getString("id", "00001"))),(TourDao.Properties.BoothID.eq(getIntent().getStringExtra("boothID")))).build().list().size())==0) {
+                    tourDao.insert(new Tour(null, shared.getString("id", "00001"), getIntent().getStringExtra("boothID"), getIntent().getDoubleExtra("lat", 0), getIntent().getDoubleExtra("long", 0)));
+                    menu.getItem(0).setIcon(R.drawable.ic_favorite_white_36dp);
+                    Toast.makeText(BoothDetailActivity.this, "Added this booth to tour", Toast.LENGTH_SHORT).show();
+                } else {
+                    tourDao.queryBuilder().where((TourDao.Properties.UserID.eq(shared.getString("id", "00001"))),(TourDao.Properties.BoothID.eq(getIntent().getStringExtra("boothID")))).buildDelete().executeDeleteWithoutDetachingEntities();
+                    this.menu.getItem(0).setIcon(R.drawable.ic_favorite_border_white_36dp);
+                    Toast.makeText(BoothDetailActivity.this, "Deleted this booth to tour", Toast.LENGTH_SHORT).show();
+                }
+
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
