@@ -6,11 +6,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -21,7 +22,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,16 +34,9 @@ import retrofit.GsonConverterFactory;
 import retrofit.Response;
 import retrofit.Retrofit;
 
-public class BoothListActivity extends AppCompatActivity {
+public class SearchResultActivity extends AppCompatActivity {
 
-    private Toolbar mToolbar;
-
-    // url to get all products list
-    private static String urlEmulator = "http://10.0.2.2/android_connect/";
-    private static String urlDevice = "http://10.70.80.249/android_connect/";
-    private static String url = urlDevice;
-    private static String categoryID;
-    private String categoryName;
+    private RecyclerView mRecyclerView;
 
     public double latitude;
     public double longitude;
@@ -52,9 +45,6 @@ public class BoothListActivity extends AppCompatActivity {
 
 
     public static String[] sort_menu = {"Popular","Name","Near by"};
-
-    private RecyclerView mRecyclerView;
-    private ProgressBar progressBar;
 
     ServiceAPI.BoothObject[] boothObjects = new ServiceAPI.BoothObject[0];
 
@@ -65,12 +55,9 @@ public class BoothListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_booth_list);
-        Intent intent = getIntent();
-        categoryName = intent.getStringExtra("categoryName");
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(categoryName);
+        getSupportActionBar().setTitle("Search \""+getIntent().getStringExtra("keyword")+"\"");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // Initialize recycler view
@@ -78,37 +65,12 @@ public class BoothListActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(new ListAdapter());
 
-        // Initialize progressbar
-        //progressBar = (ProgressBar) findViewById(R.id.progress_bar);
-        //progressBar.setVisibility(View.VISIBLE);
-
         Retrofit.Builder builder = new Retrofit.Builder();
         builder.baseUrl(getString(R.string.url));
         builder.addConverterFactory(GsonConverterFactory.create());
         final ServiceAPI serviceAPI = builder.build().create(ServiceAPI.class);
 
-        if(categoryName.equalsIgnoreCase("Decoration")) {
-            categoryID = "00001";
-        } else if(categoryName.equalsIgnoreCase("Clothes")) {
-            categoryID = "00002";
-        } else if(categoryName.equalsIgnoreCase("Bag")) {
-            categoryID = "00003";
-        } else if(categoryName.equalsIgnoreCase("Shoes")) {
-            categoryID = "00004";
-        } else if(categoryName.equalsIgnoreCase("Art")) {
-            categoryID = "00005";
-        } else if(categoryName.equalsIgnoreCase("Food")) {
-            categoryID = "00006";
-        } else if(categoryName.equalsIgnoreCase("Gift")) {
-            categoryID = "00007";
-        } else if(categoryName.equalsIgnoreCase("Instrument")) {
-            categoryID = "00008";
-        } else if(categoryName.equalsIgnoreCase("Massage")) {
-            categoryID = "00009";
-        } else if(categoryName.equalsIgnoreCase("Other")) {
-            categoryID = "00010";
-        }
-        loadData(serviceAPI,categoryID, mSelected);
+        loadData(serviceAPI, mSelected);
 
         final SwipeRefreshLayout swipeRefresh =
                 (SwipeRefreshLayout)findViewById(R.id.swiperefresh);
@@ -116,7 +78,7 @@ public class BoothListActivity extends AppCompatActivity {
             @Override
             public void onRefresh() {
                 // download data
-                loadData(serviceAPI,categoryID, mSelected);
+                loadData(serviceAPI, mSelected);
 
                 // refresh recycler view
                 mRecyclerView.getAdapter().notifyDataSetChanged();
@@ -124,17 +86,12 @@ public class BoothListActivity extends AppCompatActivity {
                 Log.d("TEST", "refresh");
             }
         });
+
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        finish();
-    }
-
-    public void loadData(ServiceAPI serviceAPI, String categoryID, String sortBy) {
+    public void loadData(ServiceAPI serviceAPI, String sortBy) {
         final ProgressDialog p = ProgressDialog.show(this, null, "Loading", true, false);
-        gps = new GPSTracker(BoothListActivity.this);
+        gps = new GPSTracker(SearchResultActivity.this);
         if (gps.canGetLocation()) {
             latitude = gps.getLatitude();
             longitude = gps.getLongitude();
@@ -144,7 +101,7 @@ public class BoothListActivity extends AppCompatActivity {
             // Ask user to enable GPS/network in settings
             gps.showSettingsAlert();
         }
-        serviceAPI.sendData(categoryID, sortBy, latitude, longitude).enqueue(new Callback<ServiceAPI.BoothObject[]>() {
+        serviceAPI.search(getIntent().getStringExtra("keyword"), sortBy, latitude, longitude).enqueue(new Callback<ServiceAPI.BoothObject[]>() {
             @Override
             public void onResponse(Response<ServiceAPI.BoothObject[]> response, Retrofit retrofit) {
                 p.dismiss();
@@ -159,9 +116,9 @@ public class BoothListActivity extends AppCompatActivity {
                 ConnectivityManager connManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
                 NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
                 if(mWifi.isConnected()) {
-                    Toast.makeText(BoothListActivity.this, "Booth not found", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SearchResultActivity.this, "Booth not found", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(BoothListActivity.this, "Connection failed", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SearchResultActivity.this, "Connection failed", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -185,7 +142,7 @@ public class BoothListActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.sort) {
             AlertDialog.Builder builder =
-                    new AlertDialog.Builder(BoothListActivity.this);
+                    new AlertDialog.Builder(SearchResultActivity.this);
             builder.setTitle("Sort by");
             if(mSelected.equalsIgnoreCase(sort_menu[0])) {
                 position = 0;
@@ -207,7 +164,7 @@ public class BoothListActivity extends AppCompatActivity {
                     builder.baseUrl(getString(R.string.url));
                     builder.addConverterFactory(GsonConverterFactory.create());
                     final ServiceAPI serviceAPI = builder.build().create(ServiceAPI.class);
-                    loadData(serviceAPI,categoryID, mSelected);
+                    loadData(serviceAPI, mSelected);
                     dialog.dismiss();
                 }
             });
@@ -224,16 +181,6 @@ public class BoothListActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
     class ListAdapter extends RecyclerView.Adapter<ListViewHolder> {
 
         @Override
@@ -248,8 +195,8 @@ public class BoothListActivity extends AppCompatActivity {
             holder.distance.setText(String.valueOf(new DecimalFormat("#0.00").format(boothObjects[position].distance)) + " km");
             holder.rating.setText(String.valueOf(new DecimalFormat("#0.0").format(boothObjects[position].rating)));
             holder.review.setText(String.valueOf(boothObjects[position].review));
-            Glide.with(BoothListActivity.this).load(boothObjects[position].thumbnailUrl).into(holder.thumbnail);
-            Glide.with(BoothListActivity.this).load(R.drawable.road_sign).into(holder.road_icon);
+            Glide.with(SearchResultActivity.this).load(boothObjects[position].thumbnailUrl).into(holder.thumbnail);
+            Glide.with(SearchResultActivity.this).load(R.drawable.road_sign).into(holder.road_icon);
         }
 
         @Override

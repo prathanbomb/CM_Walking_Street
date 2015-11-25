@@ -60,6 +60,10 @@ public interface ServiceAPI {
     }
 
     @FormUrlEncoded
+    @POST("get_search.php")
+    Call<BoothObject[]> search(@Field("keyword") String keyword, @Field("sortBy") String sortBy, @Field("latitude") double latitude, @Field("longitude") double longitude);
+
+    @FormUrlEncoded
     @POST("get_user.php")
     Call<UserObject[]> getUser(@Field("username") String username, @Field("password") String password);
 

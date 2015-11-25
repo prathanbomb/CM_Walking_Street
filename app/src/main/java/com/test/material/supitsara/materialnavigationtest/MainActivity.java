@@ -54,6 +54,8 @@ public class MainActivity extends ActionBarActivity
     SearchDao searchDao;
     String[] mDataset;
 
+    Intent intent;
+
     private static final String MY_PREFS = "my_prefs";
     ServiceAPI.UserObject[] userObjects = new ServiceAPI.UserObject[0];
 
@@ -80,6 +82,9 @@ public class MainActivity extends ActionBarActivity
                 int c = query1.list().size();
                 if (c==0)
                     searchDao.insert(new Search(null, shared.getString("id", "00001"), query));
+                intent = new Intent(getApplication(), SearchResultActivity.class);
+                intent.putExtra("keyword", query);
+                startActivity(intent);
                 return true;
             }
 
@@ -117,7 +122,8 @@ public class MainActivity extends ActionBarActivity
 
     private void initSearchData() {
         searchDao = daoSession.getSearchDao();
-        List<Search> searches = searchDao.loadAll();
+        final SharedPreferences shared = getSharedPreferences(MY_PREFS, Context.MODE_PRIVATE);
+        List<Search> searches = searchDao.queryBuilder().where(SearchDao.Properties.UserID.eq(shared.getString("id", "00001"))).build().list();
         int size = searches.size();
         mDataset = new String[size];
         for (int i = 0; i < searches.size(); i++) {
