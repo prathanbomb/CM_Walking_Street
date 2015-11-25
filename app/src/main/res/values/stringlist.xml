@@ -5,14 +5,14 @@
 
         <item>Art</item>
         <item>Bag</item>
-        <item>Cloth</item>
+        <item>Clothes</item>
         <item>Decoration</item>
         <item>Food</item>
         <item>Gift</item>
         <item>Instrument</item>
         <item>Massage</item>
-        <item>Shoe</item>
-        <item>Others</item>
+        <item>Shoes</item>
+        <item>Other</item>
 
     </string-array>
 

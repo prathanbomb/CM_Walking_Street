@@ -106,11 +106,11 @@ public class BoothListActivity extends AppCompatActivity {
 
         if(categoryName.equalsIgnoreCase("Decoration")) {
             categoryID = "00001";
-        } else if(categoryName.equalsIgnoreCase("Cloth")) {
+        } else if(categoryName.equalsIgnoreCase("Clothes")) {
             categoryID = "00002";
         } else if(categoryName.equalsIgnoreCase("Bag")) {
             categoryID = "00003";
-        } else if(categoryName.equalsIgnoreCase("Shoe")) {
+        } else if(categoryName.equalsIgnoreCase("Shoes")) {
             categoryID = "00004";
         } else if(categoryName.equalsIgnoreCase("Art")) {
             categoryID = "00005";
@@ -122,6 +122,8 @@ public class BoothListActivity extends AppCompatActivity {
             categoryID = "00008";
         } else if(categoryName.equalsIgnoreCase("Massage")) {
             categoryID = "00009";
+        } else if(categoryName.equalsIgnoreCase("Other")) {
+            categoryID = "00010";
         }
         loadData(serviceAPI,categoryID, mSelected);
 
