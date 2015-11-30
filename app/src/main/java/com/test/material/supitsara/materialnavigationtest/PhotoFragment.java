@@ -78,8 +78,9 @@ public class PhotoFragment extends Fragment {
                 Log.e("TEST", "Error : " + t.getMessage());
                 ConnectivityManager connManager = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
                 NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-                if (mWifi.isConnected()) {
-                    Toast.makeText(mContext, "No photo", Toast.LENGTH_SHORT).show();
+                NetworkInfo mMobile = connManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+                if (mWifi.isConnected()||mMobile.isConnected()) {
+                    Toast.makeText(mContext, "It has no photo", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(mContext, "Connection failed", Toast.LENGTH_SHORT).show();
                 }

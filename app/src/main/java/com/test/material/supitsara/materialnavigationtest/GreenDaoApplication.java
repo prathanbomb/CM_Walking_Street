@@ -15,6 +15,7 @@ public class GreenDaoApplication extends Application {
 
     DaoSession mDaoSession;
     SearchDao searchDao;
+    TourDao tourDao;
 
     @Override
     public void onCreate() {
@@ -28,6 +29,7 @@ public class GreenDaoApplication extends Application {
         DaoMaster daoMaster = new DaoMaster(db);
         mDaoSession = daoMaster.newSession();
         searchDao.createTable(db, true);
+        tourDao.createTable(db, true);
     }
 
     public DaoSession getDaoSession() {

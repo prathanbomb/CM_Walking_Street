@@ -81,7 +81,7 @@ public class MainActivity extends ActionBarActivity
                 Query query1 = searchDao.queryBuilder().where(SearchDao.Properties.Keyword.eq(query)).build();
                 int c = query1.list().size();
                 if (c==0)
-                    searchDao.insert(new Search(null, shared.getString("id", "00001"), query));
+                    searchDao.insert(new Search(null, shared.getString("id", "00000"), query));
                 intent = new Intent(getApplication(), SearchResultActivity.class);
                 intent.putExtra("keyword", query);
                 startActivity(intent);
@@ -123,7 +123,7 @@ public class MainActivity extends ActionBarActivity
     private void initSearchData() {
         searchDao = daoSession.getSearchDao();
         final SharedPreferences shared = getSharedPreferences(MY_PREFS, Context.MODE_PRIVATE);
-        List<Search> searches = searchDao.queryBuilder().where(SearchDao.Properties.UserID.eq(shared.getString("id", "00001"))).build().list();
+        List<Search> searches = searchDao.queryBuilder().where(SearchDao.Properties.UserID.eq(shared.getString("id", "00000"))).build().list();
         int size = searches.size();
         mDataset = new String[size];
         for (int i = 0; i < searches.size(); i++) {

@@ -116,7 +116,7 @@ public class BoothDetailActivity extends AppCompatActivity {
                 } else {
                     tourDao.queryBuilder().where((TourDao.Properties.UserID.eq(shared.getString("id", "00001"))),(TourDao.Properties.BoothID.eq(getIntent().getStringExtra("boothID")))).buildDelete().executeDeleteWithoutDetachingEntities();
                     this.menu.getItem(0).setIcon(R.drawable.ic_favorite_border_white_36dp);
-                    Toast.makeText(BoothDetailActivity.this, "Deleted this booth to tour", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(BoothDetailActivity.this, "Deleted this booth from tour", Toast.LENGTH_SHORT).show();
                 }
 
                 return true;

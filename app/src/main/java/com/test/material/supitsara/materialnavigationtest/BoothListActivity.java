@@ -158,7 +158,8 @@ public class BoothListActivity extends AppCompatActivity {
                 Log.e("TEST", "Error : " + t.getMessage());
                 ConnectivityManager connManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
                 NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-                if(mWifi.isConnected()) {
+                NetworkInfo mMobile = connManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+                if(mWifi.isConnected()||mMobile.isConnected()) {
                     Toast.makeText(BoothListActivity.this, "Booth not found", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(BoothListActivity.this, "Connection failed", Toast.LENGTH_SHORT).show();
