@@ -4,18 +4,19 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
-    android:background="#ff3eaff9"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp">
+    android:background="#ff3eaff9">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="330dp"
         android:orientation="vertical"
         android:padding="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         android:gravity="center"
         android:layout_centerInParent="true"
-        android:background="@drawable/abc_popup_background_mtrl_mult">
+        android:background="@drawable/abc_popup_background_mtrl_mult"
+        android:id="@+id/linearLayout">
 
         <ImageView
             android:id="@+id/logo"
@@ -24,7 +25,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="10dp"
             android:layout_marginTop="5dp"
-            android:background="@drawable/avatar" />
+            android:background="@drawable/app_icon_512x512" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -41,7 +42,9 @@
             android:id="@+id/username"
             android:hint="@string/username_title"
             android:maxLines="1"
-            android:singleLine="true" />
+            android:singleLine="true"
+            android:drawableLeft="@drawable/username"
+            android:drawablePadding="12dp"/>
 
         <EditText
             android:layout_width="match_parent"
@@ -51,7 +54,9 @@
             android:inputType="textPassword"
             android:hint="@string/password_title"
             android:maxLines="1"
-            android:singleLine="true" />
+            android:singleLine="true"
+            android:drawableLeft="@drawable/key_small"
+            android:drawablePadding="12dp"/>
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -74,5 +79,17 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_marginBottom="16dp"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="skip"
+        android:id="@+id/skip"
+        android:background="#ff3eaff9"
+        android:textColor="@android:color/white"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>

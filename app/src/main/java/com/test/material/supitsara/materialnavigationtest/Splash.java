@@ -29,7 +29,7 @@ public class Splash extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         mLogo = (ImageView) findViewById(R.id.logo);
-        Glide.with(Splash.this).load(R.drawable.avatar).into(mLogo);
+        Glide.with(Splash.this).load(R.drawable.app_icon_512x512).into(mLogo);
         Typeface typeface1 = Typeface.createFromAsset(getAssets(), "comfortaa_bold.ttf");
         Typeface typeface2 = Typeface.createFromAsset(getAssets(), "comfortaa_light.ttf");
         TextView textView1 = (TextView) findViewById(R.id.cm);

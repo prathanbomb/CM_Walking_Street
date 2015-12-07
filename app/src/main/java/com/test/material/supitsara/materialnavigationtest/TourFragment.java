@@ -79,7 +79,7 @@ public class TourFragment extends Fragment {
         greenDaoApplication = (GreenDaoApplication) mContext.getApplicationContext();
         daoSession = greenDaoApplication.getDaoSession();
         tourDao = daoSession.getTourDao();
-        List<Tour> tourList = tourDao.queryBuilder().where(TourDao.Properties.UserID.eq(shared.getString("id", "00001"))).build().list();
+        List<Tour> tourList = tourDao.queryBuilder().where(TourDao.Properties.UserID.eq(shared.getString("id", "00000"))).build().list();
 
         googleMap = mMapView.getMap();
         googleMap.clear();

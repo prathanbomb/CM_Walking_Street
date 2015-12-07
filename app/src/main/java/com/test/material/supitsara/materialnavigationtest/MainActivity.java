@@ -67,7 +67,6 @@ public class MainActivity extends ActionBarActivity
         setSupportActionBar(mToolbar);
 
         final SharedPreferences shared = getSharedPreferences(MY_PREFS, Context.MODE_PRIVATE);
-        final SharedPreferences.Editor editor = shared.edit();
 
         greenDaoApplication = (GreenDaoApplication) getApplication();
         daoSession = greenDaoApplication.getDaoSession();
@@ -80,7 +79,7 @@ public class MainActivity extends ActionBarActivity
                 searchDao = daoSession.getSearchDao();
                 Query query1 = searchDao.queryBuilder().where(SearchDao.Properties.Keyword.eq(query)).build();
                 int c = query1.list().size();
-                if (c==0)
+                if (c == 0)
                     searchDao.insert(new Search(null, shared.getString("id", "00000"), query));
                 intent = new Intent(getApplication(), SearchResultActivity.class);
                 intent.putExtra("keyword", query);
@@ -116,7 +115,7 @@ public class MainActivity extends ActionBarActivity
         // Set up the drawer.
         mNavigationDrawerFragment.setup(R.id.fragment_drawer, (DrawerLayout) findViewById(R.id.drawer), mToolbar);
         // populate the navigation drawer
-        mNavigationDrawerFragment.setUserData(shared.getString("fullname", "Anonymous"), shared.getString("email", "login"), shared.getString("profile_img", ""));
+        mNavigationDrawerFragment.setUserData(shared.getString("fullname", "Anonymous"), shared.getString("email", "prathanbomb@gmail.com"), shared.getString("profile_img", "R.drawable.avatar_gray"));
 
     }
 

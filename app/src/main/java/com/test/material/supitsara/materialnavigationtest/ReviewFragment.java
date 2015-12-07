@@ -70,31 +70,36 @@ public class ReviewFragment extends Fragment {
         mRecyclerView = (RecyclerView) v.findViewById(R.id.booth_review);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setAdapter(new ListAdapter());
-
         FloatingActionButton fab = (FloatingActionButton) v.findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SharedPreferences shared = mContext.getSharedPreferences(MY_PREFS, Context.MODE_PRIVATE);
-                id = shared.getString("id", "id not found");
-                Intent intent;
-                if(!wrote) {
-                    intent = new Intent(mContext, WriteReviewActivity.class);
-                    intent.putExtra("wrote", false);
+
+        if(checkLogin()) {
+            fab = (FloatingActionButton) v.findViewById(R.id.fab);
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    SharedPreferences shared = mContext.getSharedPreferences(MY_PREFS, Context.MODE_PRIVATE);
+                    id = shared.getString("id", "id not found");
+                    Intent intent;
+                    if(!wrote) {
+                        intent = new Intent(mContext, WriteReviewActivity.class);
+                        intent.putExtra("wrote", false);
+                    }
+                    else {
+                        intent = new Intent(mContext, WriteReviewActivity.class);
+                        intent.putExtra("wrote", true);
+                        intent.putExtra("myStar", myStar);
+                        intent.putExtra("myHeader", myHeader);
+                        intent.putExtra("myBody", myBody);
+                    }
+                    intent.putExtra("user_id", id);
+                    intent.putExtra("booth_id", booth_id);
+                    intent.putExtra("booth_name", booth_name);
+                    startActivity(intent);
                 }
-                else {
-                    intent = new Intent(mContext, WriteReviewActivity.class);
-                    intent.putExtra("wrote", true);
-                    intent.putExtra("myStar", myStar);
-                    intent.putExtra("myHeader", myHeader);
-                    intent.putExtra("myBody", myBody);
-                }
-                intent.putExtra("user_id", id);
-                intent.putExtra("booth_id", booth_id);
-                intent.putExtra("booth_name", booth_name);
-                startActivity(intent);
-            }
-        });
+            });
+        } else {
+            fab.hide();
+        }
 
         Retrofit.Builder builder = new Retrofit.Builder();
         builder.baseUrl(getString(R.string.url));
@@ -163,6 +168,12 @@ public class ReviewFragment extends Fragment {
         });
 
         return v;
+    }
+
+    private boolean checkLogin() {
+        SharedPreferences shared = mContext.getSharedPreferences(MY_PREFS, Context.MODE_PRIVATE);
+        boolean login = shared.getBoolean("session", false);
+        return login;
     }
 
     class ListAdapter extends RecyclerView.Adapter<ListViewHolder> {

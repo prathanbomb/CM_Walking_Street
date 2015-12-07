@@ -26,6 +26,7 @@ import retrofit.Retrofit;
  */
 public class LoginActivity extends AppCompatActivity{
     private Button mLogin;
+    private Button mSkip;
     private EditText mUsername;
     private EditText mPassword;
     private TextView mRegister;
@@ -46,9 +47,19 @@ public class LoginActivity extends AppCompatActivity{
 
         mLogo = (ImageView) findViewById(R.id.logo);
         mLogin = (Button) findViewById(R.id.button_login);
+        mSkip = (Button) findViewById(R.id.skip);
         mUsername = (EditText) findViewById(R.id.username);
         mPassword = (EditText) findViewById(R.id.password);
         mRegister = (TextView) findViewById(R.id.register);
+
+        mSkip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
 
         mLogin.setOnClickListener(new View.OnClickListener() {
             @Override

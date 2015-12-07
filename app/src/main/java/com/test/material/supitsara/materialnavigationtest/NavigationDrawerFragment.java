@@ -1,6 +1,7 @@
 package com.test.material.supitsara.materialnavigationtest;
 
 import android.app.Activity;
+import android.app.Application;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -126,11 +127,22 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
 
     public List<NavigationItem> getMenu() {
         List<NavigationItem> items = new ArrayList<NavigationItem>();
-        items.add(new NavigationItem("Home", getResources().getDrawable(R.drawable.ic_home)));
-        items.add(new NavigationItem("Browse", getResources().getDrawable(R.drawable.ic_browse)));
-        items.add(new NavigationItem("Tour", getResources().getDrawable(R.drawable.ic_tour_32)));
-        items.add(new NavigationItem("Logout", getResources().getDrawable(R.drawable.ic_logout)));
+        items.add(new NavigationItem("Home", getResources().getDrawable(R.drawable.ic_home_black_24dp)));
+        items.add(new NavigationItem("Browse", getResources().getDrawable(R.drawable.ic_store_mall_directory_black_24dp)));
+        items.add(new NavigationItem("Tour", getResources().getDrawable(R.drawable.ic_map_black_24dp)));
+        if (checkLogin()) {
+            items.add(new NavigationItem("Logout", getResources().getDrawable(R.drawable.ic_exit_to_app_black_24dp)));
+        } else {
+            items.add(new NavigationItem("Login", getResources().getDrawable(R.drawable.ic_vpn_key_black_24dp)));
+        }
+
         return items;
+    }
+
+    private boolean checkLogin() {
+        SharedPreferences shared = getActivity().getSharedPreferences("my_prefs", Context.MODE_PRIVATE);
+        boolean login = shared.getBoolean("session", false);
+        return login;
     }
 
     /**

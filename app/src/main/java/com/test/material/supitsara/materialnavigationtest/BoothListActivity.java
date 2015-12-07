@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -54,7 +55,12 @@ public class BoothListActivity extends AppCompatActivity {
     public static String[] sort_menu = {"Popular","Name","Near by"};
 
     private RecyclerView mRecyclerView;
-    private ProgressBar progressBar;
+
+    private static final String MY_PREFS = "my_prefs";
+
+    GreenDaoApplication greenDaoApplication;
+    DaoSession daoSession;
+    TourDao tourDao;
 
     ServiceAPI.BoothObject[] boothObjects = new ServiceAPI.BoothObject[0];
 
@@ -72,6 +78,9 @@ public class BoothListActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(categoryName);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        greenDaoApplication = (GreenDaoApplication) getApplication();
+        daoSession = greenDaoApplication.getDaoSession();
 
         // Initialize recycler view
         mRecyclerView = (RecyclerView) findViewById(R.id.boothList);
@@ -227,6 +236,7 @@ public class BoothListActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
+        mRecyclerView.getAdapter().notifyDataSetChanged();
         super.onResume();
     }
 
@@ -243,7 +253,7 @@ public class BoothListActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onBindViewHolder(ListViewHolder holder, int position) {
+        public void onBindViewHolder(final ListViewHolder holder, final int position) {
             holder.name.setText(boothObjects[position].boothName);
             holder.description.setText(boothObjects[position].boothDescription);
             holder.distance.setText(String.valueOf(new DecimalFormat("#0.00").format(boothObjects[position].distance)) + " km");
@@ -251,6 +261,29 @@ public class BoothListActivity extends AppCompatActivity {
             holder.review.setText(String.valueOf(boothObjects[position].review));
             Glide.with(BoothListActivity.this).load(boothObjects[position].thumbnailUrl).into(holder.thumbnail);
             Glide.with(BoothListActivity.this).load(R.drawable.road_sign).into(holder.road_icon);
+
+            final SharedPreferences shared = getSharedPreferences(MY_PREFS, Context.MODE_PRIVATE);
+            tourDao = daoSession.getTourDao();
+            if ((tourDao.queryBuilder().where((TourDao.Properties.UserID.eq(shared.getString("id", "00000"))),(TourDao.Properties.BoothID.eq(boothObjects[position].boothID))).build().list().size())==0)
+                Glide.with(BoothListActivity.this).load(R.drawable.heart_icon_transparency).into(holder.heart);
+            else
+                Glide.with(BoothListActivity.this).load(R.drawable.heart_icon).into(holder.heart);
+
+            holder.heart.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if ((tourDao.queryBuilder().where((TourDao.Properties.UserID.eq(shared.getString("id", "00000"))),(TourDao.Properties.BoothID.eq(boothObjects[position].boothID))).build().list().size())==0) {
+                        tourDao.insert(new Tour(null, shared.getString("id", "00000"), boothObjects[position].boothID, boothObjects[position].boothLat, boothObjects[position].boothLong));
+                        Glide.with(BoothListActivity.this).load(R.drawable.heart_icon).into(holder.heart);
+                        Toast.makeText(BoothListActivity.this, "Added this booth to tour", Toast.LENGTH_SHORT).show();
+                    } else {
+                        tourDao.queryBuilder().where((TourDao.Properties.UserID.eq(shared.getString("id", "00000"))),(TourDao.Properties.BoothID.eq(boothObjects[position].boothID))).buildDelete().executeDeleteWithoutDetachingEntities();
+                        Glide.with(BoothListActivity.this).load(R.drawable.heart_icon_transparency).into(holder.heart);
+                        Toast.makeText(BoothListActivity.this, "Deleted this booth from tour", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+
         }
 
         @Override
@@ -268,6 +301,7 @@ public class BoothListActivity extends AppCompatActivity {
         public TextView review;
         public ImageView thumbnail;
         public ImageView road_icon;
+        public ImageView heart;
 
         public ListViewHolder(View itemView) {
             super(itemView);
@@ -278,6 +312,7 @@ public class BoothListActivity extends AppCompatActivity {
             thumbnail = (ImageView) itemView.findViewById(R.id.img_thumbnail);
             distance = (TextView) itemView.findViewById(R.id.distance);
             road_icon = (ImageView) itemView.findViewById(R.id.road_icon);
+            heart = (ImageView) itemView.findViewById(R.id.wishlist);
             itemView.setOnClickListener(this);
             thumbnail.setOnClickListener(this);
             description.setOnClickListener(this);

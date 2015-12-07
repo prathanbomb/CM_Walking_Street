@@ -89,7 +89,7 @@ public class BoothDetailActivity extends AppCompatActivity {
 
         SharedPreferences shared = getSharedPreferences(MY_PREFS, Context.MODE_PRIVATE);
         tourDao = daoSession.getTourDao();
-        if ((tourDao.queryBuilder().where((TourDao.Properties.UserID.eq(shared.getString("id", "00001"))),(TourDao.Properties.BoothID.eq(getIntent().getStringExtra("boothID")))).build().list().size())==0)
+        if ((tourDao.queryBuilder().where((TourDao.Properties.UserID.eq(shared.getString("id", "00000"))),(TourDao.Properties.BoothID.eq(getIntent().getStringExtra("boothID")))).build().list().size())==0)
             this.menu.getItem(0).setIcon(R.drawable.ic_favorite_border_white_36dp);
         else
             this.menu.getItem(0).setIcon(R.drawable.ic_favorite_white_36dp);
@@ -109,12 +109,12 @@ public class BoothDetailActivity extends AppCompatActivity {
                 finish();
                 return true;
             case R.id.action_add:
-                if ((tourDao.queryBuilder().where((TourDao.Properties.UserID.eq(shared.getString("id", "00001"))),(TourDao.Properties.BoothID.eq(getIntent().getStringExtra("boothID")))).build().list().size())==0) {
-                    tourDao.insert(new Tour(null, shared.getString("id", "00001"), getIntent().getStringExtra("boothID"), getIntent().getDoubleExtra("lat", 0), getIntent().getDoubleExtra("long", 0)));
+                if ((tourDao.queryBuilder().where((TourDao.Properties.UserID.eq(shared.getString("id", "00000"))),(TourDao.Properties.BoothID.eq(getIntent().getStringExtra("boothID")))).build().list().size())==0) {
+                    tourDao.insert(new Tour(null, shared.getString("id", "00000"), getIntent().getStringExtra("boothID"), getIntent().getDoubleExtra("lat", 0), getIntent().getDoubleExtra("long", 0)));
                     menu.getItem(0).setIcon(R.drawable.ic_favorite_white_36dp);
                     Toast.makeText(BoothDetailActivity.this, "Added this booth to tour", Toast.LENGTH_SHORT).show();
                 } else {
-                    tourDao.queryBuilder().where((TourDao.Properties.UserID.eq(shared.getString("id", "00001"))),(TourDao.Properties.BoothID.eq(getIntent().getStringExtra("boothID")))).buildDelete().executeDeleteWithoutDetachingEntities();
+                    tourDao.queryBuilder().where((TourDao.Properties.UserID.eq(shared.getString("id", "00000"))),(TourDao.Properties.BoothID.eq(getIntent().getStringExtra("boothID")))).buildDelete().executeDeleteWithoutDetachingEntities();
                     this.menu.getItem(0).setIcon(R.drawable.ic_favorite_border_white_36dp);
                     Toast.makeText(BoothDetailActivity.this, "Deleted this booth from tour", Toast.LENGTH_SHORT).show();
                 }
